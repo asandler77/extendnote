@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Button, Text, TextInput, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default ({navigation}: any) => {
   const [input, setInput] = useState('');
@@ -22,7 +28,9 @@ export default ({navigation}: any) => {
   };
   return (
     <View>
-      <Text>Create Input</Text>
+      <View style={styles.container}>
+        <Text style={[styles.text, styles.title]}>Create Note</Text>
+      </View>
       <TextInput
         style={{
           margin: 10,
@@ -36,7 +44,31 @@ export default ({navigation}: any) => {
         onSubmitEditing={saveTheNote}
         onChangeText={onChangeText}
       />
-      <Button title="Save the note" onPress={goToNotes} />
+      {/*<Button title="Save the note" onPress={goToNotes} />*/}
+      <TouchableOpacity style={styles.button} onPress={goToNotes}>
+        <Text style={styles.text}> Save the note</Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
+  button: {
+    justifyContent: 'center',
+    backgroundColor: '#ffd700',
+    margin: 5,
+    borderRadius: 10,
+    height: 50,
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+    title: {
+        fontSize: 40,
+    },
+});

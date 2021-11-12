@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, SafeAreaView, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Carousel from './Carousel';
 import {DataType} from './types';
@@ -78,11 +78,18 @@ export default ({navigation, route}: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Enter Note</Text>
-      <Button title="Show data on Async" onPress={getMultiple} />
-      <Button title="getAllKeys" onPress={getAllKeys} />
-      <Button title="clearAll" onPress={clearAll} />
-      <Button title="Add note" onPress={addNote} />
+      <TouchableOpacity style={styles.button} onPress={getMultiple}>
+        <Text style={styles.text}> Show data</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={getAllKeys}>
+        <Text style={styles.text}> Get Keys</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={clearAll}>
+        <Text style={styles.text}> Clear All</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={addNote}>
+        <Text style={styles.text}> Add Note</Text>
+      </TouchableOpacity>
       <Carousel data={data} />
     </SafeAreaView>
   );
@@ -94,11 +101,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  input: {
-    borderWidth: 1,
-    borderColor: 'grey',
-    height: 40,
-    borderRadius: 50,
-    width: 300,
+  button: {
+    justifyContent: 'center',
+    backgroundColor: '#ffd700',
+    margin: 15,
+    borderRadius: 10,
+    width: 150,
+    height: 50,
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  title: {
+    fontSize: 40,
   },
 });

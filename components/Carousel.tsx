@@ -13,6 +13,7 @@ export default ({data}: Props) => {
       data={data}
       // horizontal={true}
       // keyExtractor={item => item.id}/>;
+      numColumns={3}
       renderItem={({item}) => {
         return (
           <View>

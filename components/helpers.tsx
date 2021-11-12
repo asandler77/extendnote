@@ -1,4 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React from 'react';
 
 export const clearAll = async () => {
   try {
