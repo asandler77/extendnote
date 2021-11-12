@@ -9,7 +9,6 @@ import {
 
 export default ({navigation}: any) => {
   const [input, setInput] = useState('');
-  const [data, setData] = useState('');
 
   const goToNotes = () => {
     navigation.navigate({
@@ -22,9 +21,6 @@ export default ({navigation}: any) => {
 
   const onChangeText = (text: string) => setInput(text);
 
-  const saveTheNote = () => {
-    setData(input);
-  };
   return (
     <View>
       <View style={styles.container}>
@@ -41,7 +37,6 @@ export default ({navigation}: any) => {
         multiline
         value={input}
         placeholder={'Write the note'}
-        onSubmitEditing={saveTheNote}
         onChangeText={onChangeText}
       />
       {/*<Button title="Save the note" onPress={goToNotes} />*/}
