@@ -7,7 +7,6 @@ interface Props {
 }
 
 export default (props: Props) => {
-  console.log('props', props);
   return (
     <View style={styles.container}>
       <Text>{props?.data?.day}</Text>

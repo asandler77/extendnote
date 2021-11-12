@@ -12,7 +12,6 @@ export default ({navigation}: any) => {
   const [data, setData] = useState('');
 
   const goToNotes = () => {
-    console.log('goToNotes data', data);
     navigation.navigate({
       name: 'Notes',
       params: {data: input},
