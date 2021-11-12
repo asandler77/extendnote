@@ -38,6 +38,7 @@ export default ({navigation}: any) => {
           borderWidth: 1,
           borderColor: 'grey',
         }}
+        autoFocus={true}
         multiline
         value={input}
         placeholder={'Write the note'}
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-    title: {
-        fontSize: 40,
-    },
+  title: {
+    fontSize: 40,
+  },
 });
