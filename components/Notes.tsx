@@ -18,14 +18,15 @@ export default ({navigation, route}: any) => {
   useEffect(() => {
     if (keys.length > 0) {
       getStoredData();
+      getKeys();
     }
-  }, [keys]);
+  }, [keys, counter]);
 
   useEffect(() => {
     createData(route.params?.data);
   }, [route.params?.data]);
 
-  const storeDataOnAsync = async (value: any) => {
+  const storeDataOnAsync = (value: any) => {
     try {
       const jsonValue = JSON.stringify(value);
       storeData(counter, jsonValue);
