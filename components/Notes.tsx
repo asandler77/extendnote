@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Carousel from './Carousel';
 import {DataType} from './types';
 import {clearAll, getCounter, getCurrentDay} from './helpers';
+import {getAllKeys, getMultiple} from './AsyncStorageApis';
 
 export default ({navigation, route}: any) => {
   const [data, setData] = useState<DataType[] | null>(null);
@@ -19,8 +20,16 @@ export default ({navigation, route}: any) => {
     createData(route.params?.data);
   }, [route.params?.data]);
 
-  const initData = async () => {
-    return await getAllKeys().then(getMultiple);
+  const initData = () => {
+    return new Promise((resolve, reject) => {
+      getKeys().then(() => {
+        if (keys.length === 0) {
+          resolve(getStoredData());
+        } else {
+          reject(console.error('no keys'));
+        }
+      });
+    });
   };
 
   const storeData = async (value: any) => {
@@ -34,22 +43,27 @@ export default ({navigation, route}: any) => {
     }
   };
 
-  const getMultiple = async () => {
-    let values;
+  const saveData = (values: [string, string | null][]) => {
     let dataArray: any[] = [];
-    try {
-      values = await AsyncStorage.multiGet(keys);
+    values.forEach(value => {
+      if (value[1]) {
+        dataArray?.push(JSON.parse(value[1]));
+      }
+    });
+    setData(dataArray);
+  };
 
-      values.forEach(value => {
-        if (value[1]) {
-          dataArray?.push(JSON.parse(value[1]));
+  const getStoredData = () => {
+    return new Promise((resolve, reject) => {
+      getMultiple(keys).then(values => {
+        console.log('values....', values);
+        if (values && values.length > 0) {
+          resolve(saveData(values));
+        } else {
+          reject(console.error('getStoredData error'));
         }
       });
-    } catch (e) {
-      // read error
-    }
-
-    setData(dataArray);
+    });
   };
 
   const createData = (note: string) => {
@@ -62,14 +76,16 @@ export default ({navigation, route}: any) => {
     storeData(dataObject);
   };
 
-  const getAllKeys = async () => {
-    let keys: string[] = [];
-    try {
-      keys = await AsyncStorage.getAllKeys();
-      setKeys(keys);
-    } catch (e) {
-      // read key error
-    }
+  const getKeys = () => {
+    return new Promise((resolve, reject) => {
+      getAllKeys().then(keys => {
+        if (keys && keys.length > 0) {
+          setKeys(keys);
+        } else {
+          reject(console.error('getKeys error'));
+        }
+      });
+    });
   };
 
   const addNote = () => {
@@ -78,10 +94,10 @@ export default ({navigation, route}: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={getMultiple}>
+      <TouchableOpacity style={styles.button} onPress={getStoredData}>
         <Text style={styles.text}> Show data</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={getAllKeys}>
+      <TouchableOpacity style={styles.button} onPress={getKeys}>
         <Text style={styles.text}> Get Keys</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={clearAll}>
