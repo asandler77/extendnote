@@ -5,6 +5,16 @@ import {DataType} from './types';
 import {getCounter, getCurrentDay} from './helpers';
 import {clearAll, getAllKeys, getMultiple, storeData} from './AsyncStorageApis';
 
+/*
+Known bugs:
+1. The first added note doesn't shown.
+2. Some times last added note appear twice after close and open the app.
+
+Should be fixed:
+getKeys on seconf useffect is work around solution for shown new added note,
+but it might be replaced by better solution.
+ */
+
 export default ({navigation, route}: any) => {
   const [data, setData] = useState<DataType[] | null>(null);
   const [counter, setCounter] = useState(0);
