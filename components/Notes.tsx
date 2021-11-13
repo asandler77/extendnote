@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Carousel from './Carousel';
 import {DataType} from './types';
-import {clearAll, getCounter, getCurrentDay} from './helpers';
-import {getAllKeys, getMultiple} from './AsyncStorageApis';
+import {getCounter, getCurrentDay} from './helpers';
+import {clearAll, getAllKeys, getMultiple, storeData} from './AsyncStorageApis';
 
 export default ({navigation, route}: any) => {
   const [data, setData] = useState<DataType[] | null>(null);
@@ -12,34 +11,27 @@ export default ({navigation, route}: any) => {
   const [keys, setKeys] = useState<string[]>([]);
 
   useEffect(() => {
-    initData();
+    getKeys();
     setCounter(getCounter);
   }, []);
+
+  useEffect(() => {
+    if (keys.length > 0) {
+      getStoredData();
+    }
+  }, [keys]);
 
   useEffect(() => {
     createData(route.params?.data);
   }, [route.params?.data]);
 
-  const initData = () => {
-    return new Promise((resolve, reject) => {
-      getKeys().then(() => {
-        if (keys.length === 0) {
-          resolve(getStoredData());
-        } else {
-          reject(console.error('no keys'));
-        }
-      });
-    });
-  };
-
-  const storeData = async (value: any) => {
+  const storeDataOnAsync = async (value: any) => {
     try {
       const jsonValue = JSON.stringify(value);
-
-      await AsyncStorage.setItem(`@-${counter}`, jsonValue);
+      storeData(counter, jsonValue);
       setCounter(counter + 1);
     } catch (e) {
-      // saving error
+      console.log('error', e);
     }
   };
 
@@ -56,7 +48,6 @@ export default ({navigation, route}: any) => {
   const getStoredData = () => {
     return new Promise((resolve, reject) => {
       getMultiple(keys).then(values => {
-        console.log('values....', values);
         if (values && values.length > 0) {
           resolve(saveData(values));
         } else {
@@ -73,7 +64,7 @@ export default ({navigation, route}: any) => {
     dataObject.day = getCurrentDay();
     dataObject.data = note;
 
-    storeData(dataObject);
+    storeDataOnAsync(dataObject);
   };
 
   const getKeys = () => {
@@ -82,7 +73,7 @@ export default ({navigation, route}: any) => {
         if (keys && keys.length > 0) {
           setKeys(keys);
         } else {
-          reject(console.error('getKeys error'));
+          reject(console.log('getKeys error'));
         }
       });
     });
