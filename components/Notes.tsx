@@ -4,6 +4,7 @@ import Carousel from './Carousel';
 import {DataType} from './types';
 import {getCounter, getCurrentDay} from './helpers';
 import {clearAll, getAllKeys, getMultiple, storeData} from './AsyncStorageApis';
+import MyButton from './MyButton';
 
 /*
 Known bugs:
@@ -28,9 +29,9 @@ export default ({navigation, route}: any) => {
   useEffect(() => {
     if (keys.length > 0) {
       getStoredData();
-      getKeys();
+      // getKeys();
     }
-  }, [keys, counter]);
+  }, [keys]);
 
   useEffect(() => {
     createData(route.params?.data);
@@ -96,18 +97,30 @@ export default ({navigation, route}: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={getStoredData}>
-        <Text style={styles.text}> Show data</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={getKeys}>
-        <Text style={styles.text}> Get Keys</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={clearAll}>
-        <Text style={styles.text}> Clear All</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={addNote}>
-        <Text style={styles.text}> Add Note</Text>
-      </TouchableOpacity>
+      <MyButton
+        text={'Show data'}
+        customTextStyle={styles.text}
+        customButtonStyle={styles.button}
+        onPress={getStoredData}
+      />
+      <MyButton
+        text={'Get Keys'}
+        customTextStyle={styles.text}
+        customButtonStyle={styles.button}
+        onPress={getKeys}
+      />
+      <MyButton
+        text={'Clear All'}
+        customTextStyle={styles.text}
+        customButtonStyle={styles.button}
+        onPress={clearAll}
+      />
+      <MyButton
+        text={'Add Note'}
+        customTextStyle={styles.text}
+        customButtonStyle={styles.button}
+        onPress={addNote}
+      />
       <Carousel data={data} />
     </SafeAreaView>
   );
