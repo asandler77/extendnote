@@ -11,6 +11,7 @@ export default (props: Props) => {
     <View style={styles.container}>
       <Text>{props?.data?.day}</Text>
       <Text>{props?.data?.data}</Text>
+      <Text>{props?.data?.key}</Text>
     </View>
   );
 };

@@ -44,20 +44,25 @@ export default ({navigation, route}: any) => {
     let dataArray: DataType[] = [];
     values.forEach(value => {
       if (value[1]) {
-        dataArray?.push(JSON.parse(value[1]));
+        const key = value[0];
+        const dayNdata = JSON.parse(value[1]);
+        dataArray?.push({...dayNdata, key});
       }
     });
     setData(dataArray);
   };
+
+
+
 
   const getDataFromAsync = async () => {
     return new Promise((resolve, reject) => {
       getAllKeys()
         .then(keys => {
           if (keys) {
-            // setKeys(keys);
             getMultiple(keys).then(values => {
               if (values) {
+                console.log('values', values);
                 saveData(values);
               }
             });
