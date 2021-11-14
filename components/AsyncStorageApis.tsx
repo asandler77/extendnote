@@ -34,3 +34,12 @@ export const clearAll = async () => {
     console.log('error', e);
   }
 };
+
+export const removeValue = async (key: string) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {
+    // remove error
+  }
+  console.log('Value is removed');
+};

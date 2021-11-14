@@ -8,13 +8,13 @@ import CreateNote from './components/CreateNote';
 const Stack = createStackNavigator();
 const App = () => {
   return (
-      // <Notes />
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Notes" component={Notes} />
-          <Stack.Screen name="CreateNote" component={CreateNote} />
-        </Stack.Navigator>
-      </NavigationContainer>
+    // <Notes />
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Notes" component={Notes} />
+        <Stack.Screen name="CreateNote" component={CreateNote} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
