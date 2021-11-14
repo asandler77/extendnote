@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import Carousel from './Carousel';
 import {DataType} from './types';
 import {getCounter, getCurrentDay} from './helpers';
-import {
-  clearAll,
-  clearAllDataOnAsync,
-  getAllKeys,
-  getMultiple,
-  storeData,
-} from './AsyncStorageApis';
+import {clearAll, getAllKeys, getMultiple, storeData} from './AsyncStorageApis';
 import MyButton from './MyButton';
 
 /*
@@ -25,7 +19,6 @@ but it might be replaced by better solution.
 export default ({navigation, route}: any) => {
   const [data, setData] = useState<DataType[] | null>(null);
   const [counter, setCounter] = useState(0);
-  const [keys, setKeys] = useState<string[]>([]);
 
   useEffect(() => {
     getDataFromAsync();
@@ -48,7 +41,7 @@ export default ({navigation, route}: any) => {
   };
 
   const saveData = (values: [string, string | null][]) => {
-    let dataArray: any[] = [];
+    let dataArray: DataType[] = [];
     values.forEach(value => {
       if (value[1]) {
         dataArray?.push(JSON.parse(value[1]));
@@ -57,25 +50,12 @@ export default ({navigation, route}: any) => {
     setData(dataArray);
   };
 
-  const getStoredData = async () => {
-    return new Promise((resolve, reject) => {
-      getMultiple(keys)
-        .then(values => {
-          if (values && values.length > 0) {
-            resolve(saveData(values));
-          }
-        })
-        .catch(error => reject(error));
-    });
-  };
-
   const getDataFromAsync = async () => {
     return new Promise((resolve, reject) => {
       getAllKeys()
         .then(keys => {
-          console.log('getDataFromAsync keyssss...', keys);
           if (keys) {
-            setKeys(keys);
+            // setKeys(keys);
             getMultiple(keys).then(values => {
               if (values) {
                 saveData(values);
@@ -113,18 +93,6 @@ export default ({navigation, route}: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <MyButton
-        text={'Show data'}
-        customTextStyle={styles.text}
-        customButtonStyle={styles.button}
-        onPress={getStoredData}
-      />
-      <MyButton
-        text={'Get Keys'}
-        customTextStyle={styles.text}
-        customButtonStyle={styles.button}
-        onPress={getDataFromAsync}
-      />
       <MyButton
         text={'Clear All'}
         customTextStyle={styles.text}
