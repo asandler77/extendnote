@@ -3,5 +3,7 @@ export const getCurrentDay = () => {
 };
 
 export const getCounter = () => {
-  return Date.now().valueOf();
+  const d = Date.now().valueOf();
+  console.log('date', d);
+  return d;
 };

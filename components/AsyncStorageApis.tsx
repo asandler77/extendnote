@@ -32,15 +32,4 @@ export const clearAll = async () => {
     console.log('error', e);
   }
 };
-// const initData = () => {
-//   return new Promise((resolve, reject) => {
-//     getKeys().then(() => {
-//       console.log('initData keys........', keys);
-//       if (keys.length > 0) {
-//         resolve(getStoredData());
-//       } else {
-//         reject(console.error('no keys'));
-//       }
-//     });
-//   });
-// };
+

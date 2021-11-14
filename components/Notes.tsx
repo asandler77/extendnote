@@ -3,7 +3,13 @@ import {SafeAreaView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Carousel from './Carousel';
 import {DataType} from './types';
 import {getCounter, getCurrentDay} from './helpers';
-import {clearAll, getAllKeys, getMultiple, storeData} from './AsyncStorageApis';
+import {
+  clearAll,
+  clearAllDataOnAsync,
+  getAllKeys,
+  getMultiple,
+  storeData,
+} from './AsyncStorageApis';
 import MyButton from './MyButton';
 
 /*
@@ -22,19 +28,20 @@ export default ({navigation, route}: any) => {
   const [keys, setKeys] = useState<string[]>([]);
 
   useEffect(() => {
-    getKeys();
+    getDataFromAsync();
     setCounter(getCounter);
   }, []);
 
-  useEffect(() => {
-    if (keys.length > 0) {
-      getStoredData();
-      // getKeys();
-    }
-  }, [keys]);
+  // useEffect(() => {
+  //   if (keys.length > 0) {
+  //     getStoredData();
+  //     // getDataFromAsync();
+  //   }
+  // }, [keys]);
 
   useEffect(() => {
     createData(route.params?.data);
+    getDataFromAsync();
   }, [route.params?.data]);
 
   const storeDataOnAsync = (value: any) => {
@@ -42,6 +49,7 @@ export default ({navigation, route}: any) => {
       const jsonValue = JSON.stringify(value);
       storeData(counter, jsonValue);
       setCounter(counter + 1);
+      console.log('setCounter', counter);
     } catch (e) {
       console.log('error', e);
     }
@@ -57,15 +65,32 @@ export default ({navigation, route}: any) => {
     setData(dataArray);
   };
 
-  const getStoredData = () => {
+  const getStoredData = async () => {
     return new Promise((resolve, reject) => {
-      getMultiple(keys).then(values => {
-        if (values && values.length > 0) {
-          resolve(saveData(values));
-        } else {
-          reject(console.error('getStoredData error'));
-        }
-      });
+      getMultiple(keys)
+        .then(values => {
+          if (values && values.length > 0) {
+            resolve(saveData(values));
+          }
+        })
+        .catch(error => reject(error));
+    });
+  };
+
+  const getDataFromAsync = async () => {
+    return new Promise((resolve, reject) => {
+      getAllKeys()
+        .then(keys => {
+          if (keys && keys.length > 0) {
+            setKeys(keys);
+            getMultiple(keys).then(values => {
+              if (values && values.length > 0) {
+                saveData(values);
+              }
+            });
+          }
+        })
+        .catch(error => reject(error));
     });
   };
 
@@ -79,20 +104,13 @@ export default ({navigation, route}: any) => {
     storeDataOnAsync(dataObject);
   };
 
-  const getKeys = () => {
-    return new Promise((resolve, reject) => {
-      getAllKeys().then(keys => {
-        if (keys && keys.length > 0) {
-          setKeys(keys);
-        } else {
-          reject(console.log('getKeys error'));
-        }
-      });
-    });
-  };
-
   const addNote = () => {
     navigation.navigate('CreateNote');
+  };
+
+  const clearAllDataOnAsync = () => {
+    clearAll();
+    getDataFromAsync();
   };
 
   return (
@@ -107,13 +125,13 @@ export default ({navigation, route}: any) => {
         text={'Get Keys'}
         customTextStyle={styles.text}
         customButtonStyle={styles.button}
-        onPress={getKeys}
+        onPress={getDataFromAsync}
       />
       <MyButton
         text={'Clear All'}
         customTextStyle={styles.text}
         customButtonStyle={styles.button}
-        onPress={clearAll}
+        onPress={clearAllDataOnAsync}
       />
       <MyButton
         text={'Add Note'}
