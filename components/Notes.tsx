@@ -32,13 +32,6 @@ export default ({navigation, route}: any) => {
     setCounter(getCounter);
   }, []);
 
-  // useEffect(() => {
-  //   if (keys.length > 0) {
-  //     getStoredData();
-  //     // getDataFromAsync();
-  //   }
-  // }, [keys]);
-
   useEffect(() => {
     createData(route.params?.data);
     getDataFromAsync();
@@ -49,7 +42,6 @@ export default ({navigation, route}: any) => {
       const jsonValue = JSON.stringify(value);
       storeData(counter, jsonValue);
       setCounter(counter + 1);
-      console.log('setCounter', counter);
     } catch (e) {
       console.log('error', e);
     }
@@ -81,10 +73,11 @@ export default ({navigation, route}: any) => {
     return new Promise((resolve, reject) => {
       getAllKeys()
         .then(keys => {
-          if (keys && keys.length > 0) {
+          console.log('getDataFromAsync keyssss...', keys);
+          if (keys) {
             setKeys(keys);
             getMultiple(keys).then(values => {
-              if (values && values.length > 0) {
+              if (values) {
                 saveData(values);
               }
             });
@@ -108,9 +101,14 @@ export default ({navigation, route}: any) => {
     navigation.navigate('CreateNote');
   };
 
-  const clearAllDataOnAsync = () => {
-    clearAll();
-    getDataFromAsync();
+  const clearAllDataOnAsync = async () => {
+    return new Promise((resolve, reject) => {
+      clearAll()
+        .then(() => {
+          resolve(getDataFromAsync());
+        })
+        .catch(error => reject(error));
+    });
   };
 
   return (
