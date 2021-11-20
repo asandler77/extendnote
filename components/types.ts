@@ -1,5 +1,6 @@
 export interface DataType {
   key?: string;
   day?: string;
-  data?: string;
+  noteText?: string;
+  onPressClearNote?: (id: string) => void;
 }

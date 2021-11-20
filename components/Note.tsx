@@ -1,17 +1,22 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import {DataType} from './types';
 
 interface Props {
   data: DataType;
 }
 
-export default (props: Props) => {
+export default ({data}: Props) => {
+  const {day, noteText, key, onPressClearNote} = data;
+  const onPressDelete = (id: string | undefined) => {
+    id && onPressClearNote && onPressClearNote(id);
+  };
   return (
     <View style={styles.container}>
-      <Text>{props?.data?.day}</Text>
-      <Text>{props?.data?.data}</Text>
-      <Text>{props?.data?.key}</Text>
+      <Text>{day}</Text>
+      <Text>{noteText}</Text>
+      <Text>{key}</Text>
+      <Button title={'Delete'} onPress={() => onPressDelete(key)} />
     </View>
   );
 };

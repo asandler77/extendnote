@@ -2,8 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import Carousel from './Carousel';
 import {DataType} from './types';
-import {getCounter, getCurrentDay} from './helpers';
-import {clearAll, getAllKeys, getMultiple, storeData} from './AsyncStorageApis';
+import {clearNote, getCounter, getCurrentDay} from './helpers';
+import {
+  clearAll,
+  getAllKeys,
+  getMultiple,
+  removeValue,
+  storeData,
+} from './AsyncStorageApis';
 import MyButton from './MyButton';
 
 /*
@@ -23,6 +29,7 @@ export default ({navigation, route}: any) => {
   useEffect(() => {
     getDataFromAsync();
     setCounter(getCounter);
+    return () => {};
   }, []);
 
   useEffect(() => {
@@ -52,9 +59,6 @@ export default ({navigation, route}: any) => {
     setData(dataArray);
   };
 
-
-
-
   const getDataFromAsync = async () => {
     return new Promise((resolve, reject) => {
       getAllKeys()
@@ -77,9 +81,16 @@ export default ({navigation, route}: any) => {
     let dataObject: DataType = {};
 
     dataObject.day = getCurrentDay();
-    dataObject.data = note;
+    dataObject.noteText = note;
+    dataObject.onPressClearNote = clearNote;
 
     storeDataOnAsync(dataObject);
+  };
+
+  const clearNote = (id: string) => {
+    console.log('id...s', id);
+
+    removeValue(id).then(getDataFromAsync);
   };
 
   const addNote = () => {
