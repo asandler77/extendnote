@@ -11,8 +11,6 @@ export default ({data}: Props) => {
   return (
     <FlatList
       data={data}
-      // horizontal={true}
-      // keyExtractor={item => item.id}/>;
       numColumns={2}
       renderItem={({item}) => {
         return (

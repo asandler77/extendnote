@@ -4,7 +4,6 @@ import Carousel from './Carousel';
 import {DataType} from './types';
 import {getCounter, getCurrentDay} from './helpers';
 import {
-  clearAll,
   getAllKeys,
   getMultiple,
   removeValue,
@@ -13,12 +12,10 @@ import {
 import MyButton from './MyButton';
 
 /*
-Known bugs:
-1. The first added note doesn't shown.
-2. Some times last added note appear twice after close and open the app.
+
 
 Should be fixed:
-getKeys on seconf useffect is work around solution for shown new added note,
+getDataFromAsync on second useEffect is work around solution for shown new added note,
 but it might be replaced by better solution.
  */
 
@@ -51,8 +48,8 @@ export default ({navigation, route}: any) => {
     values.forEach(value => {
       if (value[1]) {
         const key = value[0];
-        const onPressClearNote = clearNote;
         const dayNdata = JSON.parse(value[1]);
+        const onPressClearNote = clearNote;
         dataArray?.push({...dayNdata, key, onPressClearNote});
       }
     });
@@ -87,8 +84,6 @@ export default ({navigation, route}: any) => {
   };
 
   const clearNote = (id: string) => {
-    console.log('id...s', id);
-
     removeValue(id).then(getDataFromAsync);
   };
 
@@ -96,25 +91,8 @@ export default ({navigation, route}: any) => {
     navigation.navigate('CreateNote');
   };
 
-  const clearAllDataOnAsync = async () => {
-    return new Promise((resolve, reject) => {
-      clearAll()
-        .then(() => {
-          resolve(getDataFromAsync());
-        })
-        .catch(error => reject(error));
-    });
-  };
-  console.log('dataArray...', data);
-
   return (
     <SafeAreaView style={styles.container}>
-      <MyButton
-        text={'Clear All'}
-        customTextStyle={styles.text}
-        customButtonStyle={styles.button}
-        onPress={clearAllDataOnAsync}
-      />
       <MyButton
         text={'Add Note'}
         customTextStyle={styles.text}

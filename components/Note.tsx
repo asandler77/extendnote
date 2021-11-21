@@ -18,7 +18,6 @@ export default ({data}: Props) => {
       },
       {text: 'OK', onPress: () => id && onPressClearNote?.(id)},
     ]);
-    // id && onPressClearNote?.(id);
   };
   return (
     <View style={styles.container}>
