@@ -39,7 +39,6 @@ export default ({navigation}: any) => {
         placeholder={'Write the note'}
         onChangeText={onChangeText}
       />
-      {/*<Button title="Save the note" onPress={goToNotes} />*/}
       <TouchableOpacity style={styles.button} onPress={goToNotes}>
         <Text style={styles.text}> Save the note</Text>
       </TouchableOpacity>

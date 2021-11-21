@@ -2,8 +2,8 @@ import React from 'react';
 import {Text, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
 
 interface Props {
-  customButtonStyle: ViewStyle;
-  customTextStyle: TextStyle;
+  customButtonStyle?: ViewStyle;
+  customTextStyle?: TextStyle;
   text: string;
   onPress: any;
 }

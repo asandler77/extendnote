@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import Carousel from './Carousel';
 import {DataType} from './types';
-import {clearNote, getCounter, getCurrentDay} from './helpers';
+import {getCounter, getCurrentDay} from './helpers';
 import {
   clearAll,
   getAllKeys,
@@ -46,14 +46,14 @@ export default ({navigation, route}: any) => {
       console.log('error', e);
     }
   };
-
   const saveData = (values: [string, string | null][]) => {
     let dataArray: DataType[] = [];
     values.forEach(value => {
       if (value[1]) {
         const key = value[0];
+        const onPressClearNote = clearNote;
         const dayNdata = JSON.parse(value[1]);
-        dataArray?.push({...dayNdata, key});
+        dataArray?.push({...dayNdata, key, onPressClearNote});
       }
     });
     setData(dataArray);
@@ -66,7 +66,6 @@ export default ({navigation, route}: any) => {
           if (keys) {
             getMultiple(keys).then(values => {
               if (values) {
-                console.log('values', values);
                 saveData(values);
               }
             });
@@ -82,7 +81,7 @@ export default ({navigation, route}: any) => {
 
     dataObject.day = getCurrentDay();
     dataObject.noteText = note;
-    dataObject.onPressClearNote = clearNote;
+    // dataObject.onPressClearNote = clearNote;
 
     storeDataOnAsync(dataObject);
   };
@@ -106,6 +105,7 @@ export default ({navigation, route}: any) => {
         .catch(error => reject(error));
     });
   };
+  console.log('dataArray...', data);
 
   return (
     <SafeAreaView style={styles.container}>

@@ -18,7 +18,6 @@ export const storeData = async (counter: number, value: any) => {
 
 export const getMultiple = async (keys: string[]) => {
   try {
-    console.log('getMultiple keys,...', keys);
     return await AsyncStorage.multiGet(keys);
   } catch (e) {
     console.log('error', e);
