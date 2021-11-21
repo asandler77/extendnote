@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import {DataType} from './types';
 import MyButton from './MyButton';
 
@@ -10,8 +10,15 @@ interface Props {
 export default ({data}: Props) => {
   const {day, noteText, key, onPressClearNote} = data;
   const onPressDelete = (id: string | undefined) => {
-    console.log('id...s note', id, !!onPressClearNote);
-    id && onPressClearNote?.(id);
+    Alert.alert('Pay attention', 'The note will be deleted, are you sure???', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => id && onPressClearNote?.(id)},
+    ]);
+    // id && onPressClearNote?.(id);
   };
   return (
     <View style={styles.container}>
@@ -23,7 +30,6 @@ export default ({data}: Props) => {
         customButtonStyle={styles.button}
         onPress={() => onPressDelete(key)}
       />
-      {/*<Button title={'Delete'} onPress={() => onPressDelete(key)} />*/}
     </View>
   );
 };
@@ -40,15 +46,11 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
     backgroundColor: '#f08080',
-    // margin: 15,
     borderRadius: 10,
-    // width: 250,
-    // height: 50,
   },
 
   text: {
     textAlign: 'center',
     fontSize: 20,
-
   },
 });
