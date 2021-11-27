@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-color-literals */
 import React, {ReactElement, useState} from 'react';
-import {Modal, Pressable, Text, View} from 'react-native';
+import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import {
   BorderRadius,
   FontsFamily,
@@ -9,7 +9,6 @@ import {
   Opacity,
   Spacing,
 } from './uiLibrary';
-import {useStylesWithColors} from '@common/hooks/appearance.hooks';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {leftArrowIcon} from '../assets/leftArrow';
 import {rightArrowIcon} from '../assets/rightArrow';
@@ -40,13 +39,8 @@ export interface CalendarProps {
   linkLabel?: string;
 }
 
-const CalendarComponent = ({
-  modalClose,
-  onSelectDate,
-  selectDateLabel,
-  linkLabel,
-}: CalendarProps): ReactElement => {
-  const styles = useStylesWithColors(calendarStyles);
+const MyCalendar = (navigation: CalendarProps): ReactElement => {
+  // const styles = useStylesWithColors(calendarStyles);
   const [selectedMonth] = useState<number>(
     new Date(INITIAL_DATE).getUTCMonth() + 1,
   );
@@ -57,14 +51,14 @@ const CalendarComponent = ({
   });
 
   const onDayPress = (d: DayProps) => {
-    onSelectDate(d.dateString);
+    navigation.onSelectDate(d.dateString);
     setDay(d);
-    modalClose();
+    navigation.modalClose();
   };
 
   const showEarliest = () => {
-    modalClose();
-    onSelectDate('');
+    navigation.modalClose();
+    navigation.onSelectDate('');
   };
 
   const renderCalendarWithMarkedDates = (): ReactElement => {
@@ -162,17 +156,18 @@ const CalendarComponent = ({
         <Pressable
           testID={'modalCloseClick'}
           style={styles.modalCloseBtn}
-          onPress={modalClose}></Pressable>
+          onPress={navigation.modalClose}
+        />
         <View style={styles.calendarWrapper}>
           <View style={styles.calendarHeader}>
-            <Text style={styles.selectDate}>{selectDateLabel}</Text>
+            <Text style={styles.selectDate}>{navigation.selectDateLabel}</Text>
           </View>
           {renderCalendarWithMarkedDates()}
           <Pressable
             onPress={showEarliest}
             testID={'earliestAvailableButton'}
             style={styles.availableBtn}>
-            <Text style={styles.availableText}>{linkLabel}</Text>
+            <Text style={styles.availableText}>{navigation.linkLabel}</Text>
           </Pressable>
         </View>
       </View>
@@ -180,12 +175,13 @@ const CalendarComponent = ({
   );
 };
 
-const calendarStyles = ({HIGH_EMPHASIS}: any) => ({
+const styles = StyleSheet.create({
+  // const styles: SG = ({ BLUE, WHITE, ALWAYS_WHITE, HIGH_EMPHASIS, GRAY_300, GRAY_400, GRAY_500, SCRIM }) => ({
   calendar: {
     marginBottom: Spacing.L,
   },
   calendarText: {
-    color: '#fff',
+    color: '#1d2329',
   },
   event: {
     textDecorationStyle: 'solid',
@@ -207,13 +203,13 @@ const calendarStyles = ({HIGH_EMPHASIS}: any) => ({
     letterSpacing: 0.25,
     textAlign: 'center',
     fontFamily: FontsFamily.SANS_MEDIUM,
-    color: 'BLUE',
+    color: '#0057b8',
   },
   calendarWrapper: {
     borderTopRightRadius: Spacing.L,
     borderTopLeftRadius: Spacing.L,
     paddingTop: Spacing.L,
-    backgroundColor: 'WHITE',
+    backgroundColor: '#fff',
   },
   calendarHeader: {
     paddingBottom: Spacing.L,
@@ -230,7 +226,7 @@ const calendarStyles = ({HIGH_EMPHASIS}: any) => ({
     fontSize: FontSize.M,
     fontWeight: FontWeight.BOLD,
     letterSpacing: 0.25,
-    color: HIGH_EMPHASIS,
+    color: '#1d2329',
   },
   availableBtn: {
     paddingVertical: Spacing['2XL'],
@@ -242,33 +238,33 @@ const calendarStyles = ({HIGH_EMPHASIS}: any) => ({
     fontFamily: FontsFamily.SANS_REGULAR,
     fontSize: FontSize.M,
     letterSpacing: 0.2,
-    color: HIGH_EMPHASIS,
+    color: '#1d2329',
   },
   selectedText: {
-    backgroundColor: 'blue',
+    backgroundColor: '#0057b8',
     borderRadius: BorderRadius.XL,
-    color: 'WHITE',
+    color: '#fff',
   },
   textDisabled: {
     color: '#bdc2c7',
   },
   activeText: {
-    color: 'white',
+    color: '#fff',
   },
   disabledDay: {
     opacity: Opacity.M,
   },
   bgTransparent: {
     // need calendar background design change to avoid using isDarkMode()
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    backgroundColor: 'grey',
     flex: 1,
   },
   modalCloseBtn: {
     flex: 1,
   },
   arrowStyle: {
-    color: '#fff',
+    color: '#1d2329',
   },
 });
 
-export default CalendarComponent;
+export default MyCalendar;

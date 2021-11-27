@@ -91,6 +91,10 @@ export default ({navigation, route}: any) => {
     navigation.navigate('CreateNote');
   };
 
+  const goToCalendar = () => {
+    navigation.navigate('Calendar');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <MyButton
@@ -98,6 +102,12 @@ export default ({navigation, route}: any) => {
         customTextStyle={styles.text}
         customButtonStyle={styles.button}
         onPress={addNote}
+      />
+      <MyButton
+        text={'Go to calendar'}
+        customTextStyle={styles.text}
+        customButtonStyle={styles.button}
+        onPress={goToCalendar}
       />
       <Carousel data={data} />
     </SafeAreaView>
