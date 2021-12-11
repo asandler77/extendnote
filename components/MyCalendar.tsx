@@ -39,7 +39,7 @@ export interface CalendarProps {
   linkLabel?: string;
 }
 
-const MyCalendar = (navigation: CalendarProps): ReactElement => {
+const MyCalendar = ({navigation}: any): ReactElement => {
   // const styles = useStylesWithColors(calendarStyles);
   const [selectedMonth] = useState<number>(
     new Date(INITIAL_DATE).getUTCMonth() + 1,
@@ -51,6 +51,7 @@ const MyCalendar = (navigation: CalendarProps): ReactElement => {
   });
 
   const onDayPress = (d: DayProps) => {
+    console.log('date click...', d);
     navigation.onSelectDate(d.dateString);
     setDay(d);
     navigation.modalClose();
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
   },
   bgTransparent: {
     // need calendar background design change to avoid using isDarkMode()
-    backgroundColor: 'grey',
+    // backgroundColor: 'white',
     flex: 1,
   },
   modalCloseBtn: {
